@@ -4,7 +4,7 @@
 
 // defines pins numbers
 const int buttonPin = 3;      // the number of the pushbutton pin
-const int ledPin =  13;       // the number of the LED pin for button status (Data sending)
+//const int ledPin =  13;       // the number of the LED pin for button status (Data sending)
 const int trigPin = 9;        // ultrasonic sensor 
 const int echoPin = 10;       // ultrasonic sensor 
 
@@ -18,8 +18,7 @@ int distance;
 int level;
 float tempLevel = 0;
 float totalLevel= 30.00; 
-int buttonState = 0;    
-int moi;
+int buttonState = 0; 
 int moilvl;
 DHT dht(2, DHT11);
  
@@ -58,7 +57,7 @@ void setup() {
 
   dht.begin();
 
-  pinMode(ledPin, OUTPUT);      // initialize the LED pin as an output
+  //pinMode(ledPin, OUTPUT);      // initialize the LED pin as an output
   pinMode(buttonPin, INPUT);    // initialize the pushbutton pin as an input
 
   pinMode(trigPin, OUTPUT);     // Sets the trigPin as an Output
@@ -90,15 +89,15 @@ void loop()
   {
   // read the state of the pushbutton value:
   buttonState = digitalRead(buttonPin);
-  
+  Serial.print("Begin-----------------------------------------------------------\n");
   // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
   if (buttonState == LOW) 
     {
-    digitalWrite(ledPin, LOW);  // turn LED off
+    //digitalWrite(ledPin, LOW);  // turn LED off
     } 
-  else 
+  else if (buttonState == HIGH) 
     {
-    digitalWrite(ledPin, HIGH); // turn LED on
+    //digitalWrite(ledPin, HIGH); // turn LED on
 
     // Read sensor values and multiply by 100 to effictively have 2 decimals
     uint16_t humidity = dht.readHumidity(false);
@@ -133,26 +132,26 @@ void loop()
     level = 100 - tempLevel;
 
     // Moisture Value+++++++++++++++++++++++++++++++
-    moi = 470;
+    int moistureValue = analogRead(A1);
 
     //Calculate Moisture Level
-    if(moi < 250)
+    if(moistureValue < 250)
       {
       moilvl = 1;
       }
-    else if(moi < 450)
+    else if(moistureValue < 450)
       {
       moilvl = 2;
       }
-    else if(moi < 600)
+    else if(moistureValue < 600)
       {
       moilvl = 3;
       }
-    else if(moi < 800)
+    else if(moistureValue < 800)
       {
       moilvl = 4;
       }
-    else if(moi < 1000)
+    else if(moistureValue < 1000)
       {
       moilvl = 5;
       }
@@ -179,21 +178,13 @@ void loop()
     payload[4] = uint8_t(moilvl);
     //sendPayload(payload, 5);
     
-//    // Convert to 2 Digit
-//    for (int i = 0; i < 5;i++) 
-//    {
-//    if(payload[i]<16)
-//      {
-//      payload[i] = payload[i] << 4;
-//      }
-//    }
-    
     //Serial.println(a);
     Serial.print("Temperature: " + String(temperature) + "+50\n");
     Serial.print("Humidity: " + String(humidity) + "\n");
     Serial.print("distance (cm): " + String(distance) + "\n");
     Serial.print("Level (%): " + String(level) + "\n");
     Serial.print("Fire : " + String(fire) + "\n");
+    Serial.print("Moisture Value: " + String(moistureValue) + "\n");
     Serial.print("Moisture (LV): " + String(moilvl) + "\n");
     
 //    switch (fire) {
