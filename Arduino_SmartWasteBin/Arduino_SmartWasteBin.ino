@@ -71,7 +71,7 @@ void loop(){
   // Send the data on schedule
   Serial.print("Period : " + String((currentMilis-startMilis)/1000)+ "\n");
   currentMilis = millis();
-  if(currentMilis-startMilis >= 30000)  // Set the time schedule
+  if(currentMilis-startMilis >= 3600000)  // Set the time schedule
    {
    startMilis = millis();
    Serial.print("Ready to send\n");
