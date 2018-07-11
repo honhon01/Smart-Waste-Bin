@@ -1,5 +1,4 @@
 #include <SigFox.h>
-#include <ArduinoLowPower.h>
 #include <DHT.h>
 
 // defines pins numbers
